@@ -26,17 +26,20 @@ public class GameManager : MonoBehaviour
 
         if (get.result == UnityWebRequest.Result.Success)
         {
-            var datos = JsonUtility.FromJson<PuntajeModel>(get.downloadHandler.text);
+            
+            string json = get.downloadHandler.text;
+            PuntajeModel datos = JsonUtility.FromJson<PuntajeModel>(json);
+
             puntajeAnteriorText.text = "Puntaje anterior: " + datos.puntaje;
 
-           
-            WWWForm form = new WWWForm();
+           WWWForm form = new WWWForm();
             form.AddField("nombre_usuario", nombre);
             form.AddField("puntaje", int.Parse(puntajeInput.text));
+
             UnityWebRequest post = UnityWebRequest.Post(insertUrl, form);
             yield return post.SendWebRequest();
 
-            Debug.Log(post.downloadHandler.text);
+            Debug.Log(post.downloadHandler.text); 
         }
         else
         {
